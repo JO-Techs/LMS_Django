@@ -1,0 +1,68 @@
+{% extends 'lms_app/base.html' %}
+
+{% block title %}Welcome to LMS Platform{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="jumbotron bg-light p-5 rounded-3 my-4">
+        <h1 class="display-4">Welcome to LMS Platform</h1>
+        <p class="lead">A comprehensive learning management system for students and teachers.</p>
+        <hr class="my-4">
+        <p>Explore courses, access learning materials, submit assignments, and track your progress all in one place.</p>
+        {% if not user.is_authenticated %}
+        <div class="d-flex gap-2">
+            <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Login</a>
+            <a class="btn btn-outline-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>
+        </div>
+        {% else %}
+        <a class="btn btn-primary btn-lg" href="{% url 'course_list' %}" role="button">Browse Courses</a>
+        {% endif %}
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">For Students</h5>
+                    <p class="card-text">Enroll in courses, access learning materials, submit assignments, and track your progress.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'course_list' %}" class="btn btn-primary">Browse Courses</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">For Teachers</h5>
+                    <p class="card-text">Create courses, add learning materials, create assignments, and grade student submissions.</p>
+                </div>
+                <div class="card-footer">
+                    {% if user.is_authenticated and user.role == 'teacher' %}
+                    <a href="{% url 'course_create' %}" class="btn btn-primary">Create Course</a>
+                    {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-primary">Register as Teacher</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Features</h5>
+                    <ul class="list-unstyled">
+                        <li>✓ Course Management</li>
+                        <li>✓ Learning Materials</li>
+                        <li>✓ Assignment Submission</li>
+                        <li>✓ Grading System</li>
+                        <li>✓ Progress Tracking</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
