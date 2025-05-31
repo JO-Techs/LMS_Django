@@ -66,6 +66,8 @@ Teachers can create courses, organize them into modules, and add various types o
 2. Students submit their work before the deadline
 3. Teachers grade submissions and provide feedback
 
+## Looking for collaboratortors to scale up the project
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
