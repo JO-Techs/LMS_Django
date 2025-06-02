@@ -1,0 +1,16 @@
+{% extends 'lms_app/base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Quizzes</h2>
+    <a href="{% url 'quiz_create' %}" class="btn btn-success mb-3">Create New Quiz</a>
+    <ul class="list-group">
+        {% for quiz in quizzes %}
+        <li class="list-group-item">
+            {{ quiz.title }} ({{ quiz.created_at|date:"Y-m-d" }})
+        </li>
+        {% empty %}
+        <li class="list-group-item">No quizzes found.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
