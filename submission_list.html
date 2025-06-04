@@ -1,0 +1,84 @@
+{% extends 'lms_app/base.html' %}
+
+{% block title %}Submissions{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Student Submissions</h1>
+    
+    {% if submissions %}
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-4">Student</div>
+                <div class="col-md-4">Assignment</div>
+                <div class="col-md-2">Submitted On</div>
+                <div class="col-md-2">Actions</div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="list-group list-group-flush">
+                {% for submission in submissions %}
+                <div class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">{{ submission.student.username }}</div>
+                        <div class="col-md-4">{{ submission.assignment.title }}</div>
+                        <div class="col-md-2">{{ submission.submitted_on|date:"M d, Y" }}</div>
+                        <div class="col-md-2">
+                            <a href="{{ submission.file.url }}" class="btn btn-sm btn-outline-primary" target="_blank">View</a>
+                            {% if not submission.grade %}
+                            <a href="{% url 'grade_submission' submission.pk %}" class="btn btn-sm btn-primary">Grade</a>
+                            {% else %}
+                            <span class="badge bg-success">Graded</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    {% if is_paginated %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    
+    {% else %}
+    <div class="alert alert-info">
+        No submissions found.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
